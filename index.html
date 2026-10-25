@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pabrik Secarik Kertas</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-leaf"></i> SECARIK KERTAS</h1>
+        <p>Automation Konten Generator</p>
+    </header>
+
+    <div class="container">
+        <!-- Pengaturan API & Model -->
+        <div class="card api-card">
+            <input type="password" id="apiKey" placeholder="Masukkan API Key Google Gemini...">
+            
+            <select id="modelSelect">
+                <option value="gemini-3.8-flash">Gemini 3.8 Flash (Premium)</option>
+                <option value="gemini-3.5-flash">Gemini 3.5 Flash (Gratis/Standar)</option>
+                <option value="gemini-flash-latest">Gemini Flash Latest (Otomatis)</option>
+            </select>
+
+            <button id="saveApiBtn" class="btn-small">Simpan Pengaturan</button>
+            <span id="apiStatus"></span>
+        </div>
+
+        <!-- Input Ide -->
+        <div class="card input-card">
+            <label>IDE / TEMA KONTEN HARI INI</label>
+            <textarea id="ideInput" rows="3" placeholder="Contoh: Merasa tertinggal dari teman seumuran, atau Hujan di perjalanan pulang..."></textarea>
+            <button id="generateBtn" class="btn-primary"><i class="fa-solid fa-bolt"></i> Generate 5-in-1 Output</button>
+        </div>
+
+        <!-- Output Teks -->
+        <div class="card output-card">
+            <div class="toolbar">
+                <span class="badge"><i class="fa-solid fa-shield-check"></i> Auto-Saved</span>
+                <div class="actions">
+                    <button id="copyBtn" class="btn-icon"><i class="fa-solid fa-copy"></i> Salin</button>
+                    <button id="downloadBtn" class="btn-download"><i class="fa-solid fa-download"></i> Simpan TXT</button>
+                </div>
+            </div>
+            <textarea id="outputArea" placeholder="Hasil paket lengkap kontenmu akan otomatis tersimpan dan muncul di sini..." readonly></textarea>
+        </div>
+
+                        <!-- Studio TTS Terintegrasi dengan Enzo & Temperature -->
+        <div class="card tts-card">
+            <label style="color: #00ccff;"><i class="fa-solid fa-headphones"></i> STUDIO SUARA (TTS)</label>
+            <p style="font-size: 11px; color: #888; margin-bottom: 10px;">Paste teks Skrip Narasi dari atas ke sini untuk diubah menjadi Voiceover.</p>
+            <textarea id="ttsInput" rows="4" placeholder="Paste skrip di sini..."></textarea>
+            
+            <label style="margin-top: 10px;">PILIH SUARA (SPEAKER)</label>
+            <select id="suaraTts">
+                <optgroup label="Storyteller (Rekomendasi Narasi)">
+                    <option value="enzo" selected>Enzo — Storyteller (Crisp, Low pitch)</option>
+                    <option value="riko">Riko — Storyteller (Confident, Deep pitch)</option>
+                    <option value="sami">Sami — Storyteller (Cool, Low pitch)</option>
+                </optgroup>
+                <optgroup label="Suara Lainnya">
+                    <option value="eve">Eve — Wanita</option>
+                    <option value="ara">Ara — Wanita</option>
+                    <option value="rex">Rex — Pria</option>
+                    <option value="sal">Sal — Pria</option>
+                    <option value="zephyr">Zephyr — Netral</option>
+                </optgroup>
+            </select>
+
+                        <label style="margin-top: 10px;">TEMPERATURE: <span id="tempValue" style="color: #ffcc00;">1</span></label>
+            <input type="range" id="temperatureRange" min="0" max="2" step="0.1" value="1" oninput="document.getElementById('tempValue').textContent = this.value" style="width: 100%; margin-bottom: 10px; accent-color: #00ccff;">
+
+
+            <label style="margin-top: 5px;">INSTRUKSI GAYA BICARA (OPSIONAL)</label>
+            <textarea id="instruksiTts" rows="2" placeholder="Contoh: Bicara dengan tempo stabil, emosional, dan hangat..."></textarea>
+            
+            <button id="generateTtsBtn" class="btn-tts" style="margin-top: 10px;"><i class="fa-solid fa-play"></i> Generate Voice (3.8 Flash TTS)</button>
+            
+            <!-- Audio Player -->
+            <div id="audioContainer" class="audio-container">
+                <audio id="audioPlayer" controls></audio>
+                <a id="downloadAudioBtn" class="btn-small" style="background-color: #222; text-decoration: none; display: inline-block; margin-top: 10px;"><i class="fa-solid fa-download"></i> Download MP3</a>
+            </div>
+        </div>

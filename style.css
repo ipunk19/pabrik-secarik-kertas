@@ -1,0 +1,32 @@
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+body { background-color: #0c0c0c; color: #e0e0e0; padding-bottom: 30px; }
+
+header { background-color: #111; padding: 20px; text-align: center; border-bottom: 2px solid #ffcc00; }
+header h1 { color: #ffcc00; font-size: 20px; letter-spacing: 2px; }
+header p { color: #888; font-size: 12px; margin-top: 5px; text-transform: uppercase; }
+
+.container { padding: 15px; max-width: 500px; margin: 0 auto; }
+.card { background-color: #151515; border: 1px solid #333; border-radius: 12px; padding: 15px; margin-bottom: 15px; }
+
+input, textarea, select { width: 100%; background-color: #050505; border: 1px solid #444; color: #fff; padding: 12px; border-radius: 8px; font-size: 14px; outline: none; margin-bottom: 10px; }
+input:focus, textarea:focus, select:focus { border-color: #ffcc00; }
+label { display: block; color: #ffcc00; font-size: 11px; font-weight: bold; margin-bottom: 8px; letter-spacing: 1px; }
+
+.btn-primary { width: 100%; background-color: #ffcc00; color: #000; font-weight: bold; padding: 15px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+.btn-primary:active { transform: scale(0.98); }
+.btn-tts { width: 100%; background-color: #00ccff; color: #000; font-weight: bold; padding: 15px; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; }
+.btn-tts:active { transform: scale(0.98); }
+.btn-small { background-color: #333; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+#apiStatus { font-size: 12px; margin-left: 10px; color: #00ff00; }
+
+.toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.badge { font-size: 10px; color: #888; background: #222; padding: 4px 8px; border-radius: 4px; }
+.actions { display: flex; gap: 8px; }
+.btn-icon { background: #222; color: #fff; border: 1px solid #444; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+.btn-download { background: #ffcc00; color: #000; border: none; font-weight: bold; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+
+#outputArea { height: 400px; line-height: 1.6; border: none; background: #0a0a0a; color: #ddd; font-size: 13px; margin-bottom: 0; }
+#ttsInput { height: 120px; line-height: 1.5; font-size: 13px; }
+
+.audio-container { display: none; margin-top: 15px; text-align: center; background: #111; padding: 15px; border-radius: 8px; border: 1px solid #333; }
+audio { width: 100%; outline: none; border-radius: 8px; }
