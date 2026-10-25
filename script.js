@@ -1,8 +1,28 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Elemen Teks
+// FUNGSI GLOBAL: Simpan API Key (Dijamin merespons di Acode / Webview HP)
+function simpanApiKey() {
     const apiKeyInput = document.getElementById("apiKey");
     const modelSelect = document.getElementById("modelSelect");
-    const saveApiBtn = document.getElementById("saveApiBtn");
+    const apiStatus = document.getElementById("apiStatus");
+    
+    const key = apiKeyInput.value.trim();
+    if (!key) {
+        alert("❌ Masukkan API Key terlebih dahulu!");
+        return;
+    }
+
+    try {
+        localStorage.setItem("geminiApiKey", key);
+        localStorage.setItem("geminiSelectedModel", modelSelect.value);
+        apiStatus.textContent = "✓ Disimpan";
+        alert("✅ API Key berhasil disimpan ke perangkat!");
+    } catch (error) {
+        alert("❌ Gagal menyimpan: " + error.message);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const apiKeyInput = document.getElementById("apiKey");
+    const modelSelect = document.getElementById("modelSelect");
     const apiStatus = document.getElementById("apiStatus");
     const ideInput = document.getElementById("ideInput");
     const generateBtn = document.getElementById("generateBtn");
@@ -10,7 +30,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const copyBtn = document.getElementById("copyBtn");
     const downloadBtn = document.getElementById("downloadBtn");
 
-    // Elemen TTS
     const ttsInput = document.getElementById("ttsInput");
     const suaraTts = document.getElementById("suaraTts");
     const temperatureRange = document.getElementById("temperatureRange");
@@ -20,35 +39,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const audioPlayer = document.getElementById("audioPlayer");
     const downloadAudioBtn = document.getElementById("downloadAudioBtn");
 
-    // 1. MEMUAT DATA YANG TERSIMPAN
-    if (localStorage.getItem("geminiApiKey")) {
-        apiKeyInput.value = localStorage.getItem("geminiApiKey");
-        apiStatus.textContent = "✓ Key Aktif";
-    }
-    if (localStorage.getItem("geminiSelectedModel")) {
-        modelSelect.value = localStorage.getItem("geminiSelectedModel");
-    }
-    if (localStorage.getItem("secarikKertas_backup")) {
-        outputArea.value = localStorage.getItem("secarikKertas_backup");
-    }
-
-    // 2. SIMPAN PENGATURAN
-    saveApiBtn.addEventListener("click", () => {
-        if (apiKeyInput.value.trim()) {
-            localStorage.setItem("geminiApiKey", apiKeyInput.value.trim());
-            localStorage.setItem("geminiSelectedModel", modelSelect.value);
-            apiStatus.textContent = "✓ Disimpan";
+    // Load data tersimpan saat halaman dibuka
+    try {
+        if (localStorage.getItem("geminiApiKey")) {
+            apiKeyInput.value = localStorage.getItem("geminiApiKey");
+            apiStatus.textContent = "✓ Key Aktif";
         }
-    });
+        if (localStorage.getItem("geminiSelectedModel")) {
+            modelSelect.value = localStorage.getItem("geminiSelectedModel");
+        }
+        if (localStorage.getItem("secarikKertas_backup")) {
+            outputArea.value = localStorage.getItem("secarikKertas_backup");
+        }
+    } catch (e) {}
 
     // 3. LOGIKA GENERATE TEKS 5-IN-1
     generateBtn.addEventListener("click", async () => {
-        const apiKey = localStorage.getItem("geminiApiKey");
+        const apiKey = localStorage.getItem("geminiApiKey") || apiKeyInput.value.trim();
         const selectedModel = modelSelect.value;
         const ide = ideInput.value.trim();
 
-        if (!apiKey) return alert("API Key belum disimpan!");
-        if (!ide) return alert("Ide konten masih kosong!");
+        if (!apiKey) {
+            alert("API Key belum disimpan atau kosong!");
+            return;
+        }
+        if (!ide) {
+            alert("Ide konten masih kosong!");
+            return;
+        }
 
         generateBtn.innerHTML = `<i class='fa-solid fa-spinner fa-spin'></i> Memproses dengan ${selectedModel}...`;
         generateBtn.disabled = true;
@@ -87,7 +105,10 @@ Deskripsi: (1 paragraf deskripsi yang mengandung kata kunci SEO)`;
 
             const hasil = data.candidates[0].content.parts[0].text;
             outputArea.value = hasil;
-            localStorage.setItem("secarikKertas_backup", hasil);
+            
+            try {
+                localStorage.setItem("secarikKertas_backup", hasil);
+            } catch (e) {}
 
         } catch (error) {
             outputArea.value = `❌ GAGAL MEMPROSES:\n\n${error.message}`;
@@ -97,16 +118,22 @@ Deskripsi: (1 paragraf deskripsi yang mengandung kata kunci SEO)`;
         }
     });
 
-    // 4. LOGIKA GENERATE TTS AUDIO (DENGAN TEMPERATURE DINAMIS)
+    // 4. LOGIKA GENERATE TTS AUDIO
     generateTtsBtn.addEventListener("click", async () => {
-        const apiKey = localStorage.getItem("geminiApiKey");
+        const apiKey = localStorage.getItem("geminiApiKey") || apiKeyInput.value.trim();
         const teks = ttsInput.value.trim();
         const selectedVoice = suaraTts.value;
         const temperatureVal = parseFloat(temperatureRange.value);
         const instruksi = instruksiTts.value.trim();
 
-        if (!apiKey) return alert("API Key belum disimpan!");
-        if (!teks) return alert("Paste dulu skrip narasinya ke kotak teks TTS!");
+        if (!apiKey) {
+            alert("API Key belum disimpan!");
+            return;
+        }
+        if (!teks) {
+            alert("Paste dulu skrip narasinya ke kotak teks TTS!");
+            return;
+        }
 
         generateTtsBtn.innerHTML = `<i class='fa-solid fa-spinner fa-spin'></i> Merender Suara (${selectedVoice})...`;
         generateTtsBtn.disabled = true;
@@ -176,3 +203,4 @@ Deskripsi: (1 paragraf deskripsi yang mengandung kata kunci SEO)`;
         a.click();
     });
 });
+            
